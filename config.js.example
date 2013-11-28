@@ -1,0 +1,8 @@
+var config = {}
+
+config.key = 'KEY_GOES_HERE';
+config.secret = 'SECRET_GOES_HERE';
+
+config.port = 8822;
+
+module.exports = config;

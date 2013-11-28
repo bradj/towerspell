@@ -1,0 +1,22 @@
+doctype 5
+html(lang="en")
+    head
+        title= pageTitle
+        include includes/resources.jade
+    body(style="padding: 70px 0;")
+        nav(role='navigation').navbar.navbar-inverse.navbar-fixed-top.text-center
+            div.btn-group
+                a(href='/').btn.btn-lg.btn-primary
+                    span.glyphicon.glyphicon-home
+                a(href='/about').btn.btn-lg.btn-primary
+                    span.glyphicon.glyphicon-info-sign
+        div.container
+            div.jumbotron
+                h1 Tower Spell 
+                p Modeled after <a href='http://spelltower.com/'>Spelltower</a>, a game created by <a href='https://twitter.com/helvetica'>Zach Gage</a>.
+            div.row
+                div.col-md-8.col-sm-12
+                    p Spelltower is an amazing game. I enjoy playing it so much that I wanted to see if I could recreate it in the browser.<br/>
+                        <b>This is the product of that journey.</b>
+                    p I have a lot of thanks to give <a href='https://twitter.com/helvetica'>Zach Gage</a>.  He created a wonderful piece of art.
+                    p I hope this measures up.

@@ -1,0 +1,14 @@
+doctype 5
+html(lang="en")
+    head
+        title= title
+        include includes/resources.jade
+        script(src="/js/main.js")
+    body(style="padding-top: 70px;")
+        nav(role='navigation').navbar.navbar-inverse.navbar-fixed-top.text-center
+            div.btn-group
+                a(href='/').btn.btn-lg.btn-primary
+                    span.glyphicon.glyphicon-home
+                a(href='/about').btn.btn-lg.btn-primary
+                    span.glyphicon.glyphicon-info-sign
+        div(id='board').game
