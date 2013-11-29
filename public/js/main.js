@@ -1,12 +1,14 @@
 (function () {
 
-    var cellWidth = 60;
+    var cellWidth = 50;
     var cellHeight = 50;
     var numRows = 12;
     var numCols = 8;
-    var cellColor = '#8ABDF2';
-    var cellStrokeColor = '#2D649D';
-    var cellSelectColor = '#7B98B6';
+    var boardHeight = cellHeight * numRows;
+    var boardWidth = cellWidth * numCols;
+    var cellColor = '#333';
+    var cellStrokeColor = '#A4ACE2';
+    var cellSelectColor = '#2ABA1B';
     var textColor = '#fff';
     var game;
 
@@ -47,7 +49,7 @@
             cells[xx] = [numRows];
 
             for (var yy = 0; yy < numRows; yy++) { // columns
-                yPos = yy * cellHeight;
+                yPos = (boardHeight - cellHeight) - (yy * cellHeight);
 
                 var cell = new Cell(xPos, yPos);
                 // I do this because I am listening for events off of the text and rect.
@@ -69,17 +71,39 @@
         stage.add(layer);
         console.log('Board drawn');
 
+        this.removeWord = function(cells) {
+            for (var ii = 0, len = cells.length; ii < len; ii++) this.removeCell(cells[ii]);
+        };
+
+        this.removeCell = function(cell) {
+            cells[cell.boardX].splice(cell.boardY, 1);
+            cell.rect.destroy();
+            cell.text.destroy();
+
+            for (var ii = cell.boardY, len = cells[cell.boardX].length; ii < len; ii++ ) {
+                var c = cells[cell.boardX][ii];
+                c.boardY = ii;
+                c.rect.boardY = ii;
+                c.text.boardY = ii;
+                c.rect.setY(c.rect.getY() + cellHeight);
+                c.text.setY(c.text.getY() + cellHeight);
+            }
+
+            layer.draw();
+        };
+
         this.getCell = function(shape) { return cells[shape.boardX][shape.boardY]; };
         this.clearboard = function() {
-            for (var ii = 0, len = cells.length; ii < len; ii++) {
-                for (var zz = 0, len2 = cells[ii].length; zz < len2; zz++) {
-                    cells[ii][zz].rect.setFill(cellColor);
-                    cells[ii][zz].rect.boardClicked = false;
+            for (var xx = 0, len = cells.length; xx < len; xx++) {
+                for (var yy = 0, len2 = cells[xx].length; yy < len2; yy++) {
+                    cells[xx][yy].rect.setFill(cellColor);
+                    cells[xx][yy].rect.boardClicked = false;
                 }
             }
 
             layer.draw();
         };
+
         this.resetCells = function(arr) {
             for (var ii = 0, len = arr.length; ii < len; ii++)
                 arr[ii].reset();
@@ -93,13 +117,14 @@
 
         var stage = new Kinetic.Stage({
             container: 'board',
-            width: cellWidth * numCols,
-            height: cellHeight * numRows
+            width: boardWidth,
+            height: boardHeight
         });
 
         var layer = new Kinetic.Layer();
         layer.on('click', function(evt) {
             var cell = board.getCell(evt.targetNode);
+            console.log(cell.boardX + ', ' + cell.boardY);
 
             if (!that.isClickAllowed(cell)) return;
 
@@ -115,6 +140,11 @@
             else {
                 word.push(cell);
                 cell.wordidx = word.length - 1;
+            }
+
+            if (word.length >= 5) {
+                board.removeWord(word);
+                word = [];
             }
 
             layer.draw();

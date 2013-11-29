@@ -1,9 +1,8 @@
 body { 
-    background-color: #eee; 
-    /*background-image: url('../imgs/dark_Tire.png');*/
+    background-color: #eee;
 }
 
 .game {
-    width: 480px;
+    width: 400px;
     margin: 0 auto;
 }
