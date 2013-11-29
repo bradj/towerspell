@@ -10,23 +10,24 @@
     var cellStrokeColor = '#A4ACE2';
     var cellSelectColor = '#2ABA1B';
     var textColor = '#fff';
+    var gen = new Generator();
     var game;
 
     function Cell(x, y) {
         this.rect = new Kinetic.Rect({
-                x: x,
-                y: y,
-                width: cellWidth,
-                height: cellHeight,
-                fill: cellColor,
-                stroke: cellStrokeColor,
-                strokeWidth: 1
-            });
+            x: x,
+            y: y,
+            width: cellWidth,
+            height: cellHeight,
+            fill: cellColor,
+            stroke: cellStrokeColor,
+            strokeWidth: 1
+        });
 
         this.text = new Kinetic.Text({
             x: x + cellWidth / 2 - 10,
             y: y + cellHeight / 2 - 13,
-            text: 'T',
+            text: gen.generate(),
             fontFamily: 'Arial',
             fontStyle: 'bold',
             fontSize: 32,
@@ -71,10 +72,10 @@
         stage.add(layer);
         console.log('Board drawn');
 
-        this.removeWord = function(cells) {
-            for (var ii = 0, len = cells.length; ii < len; ii++) this.removeCell(cells[ii]);
-        };
+        // Returns the cell based on board X and Y position.
+        this.getCell = function(shape) { return cells[shape.boardX][shape.boardY]; };
 
+        // Removes the cell provided from the board
         this.removeCell = function(cell) {
             cells[cell.boardX].splice(cell.boardY, 1);
             cell.rect.destroy();
@@ -88,25 +89,17 @@
                 c.rect.setY(c.rect.getY() + cellHeight);
                 c.text.setY(c.text.getY() + cellHeight);
             }
-
-            layer.draw();
         };
 
-        this.getCell = function(shape) { return cells[shape.boardX][shape.boardY]; };
-        this.clearboard = function() {
-            for (var xx = 0, len = cells.length; xx < len; xx++) {
-                for (var yy = 0, len2 = cells[xx].length; yy < len2; yy++) {
-                    cells[xx][yy].rect.setFill(cellColor);
-                    cells[xx][yy].rect.boardClicked = false;
-                }
-            }
-
-            layer.draw();
+        // Removes the collection of cells provided from the board
+        this.removeWord = function(cells) {
+            for (var ii = 0, len = cells.length; ii < len; ii++) this.removeCell(cells[ii]);
         };
 
-        this.resetCells = function(arr) {
-            for (var ii = 0, len = arr.length; ii < len; ii++)
-                arr[ii].reset();
+        // Resets the cells provided
+        this.resetCells = function(cells) {
+            for (var ii = 0, len = cells.length; ii < len; ii++)
+                cells[ii].reset();
         };
     };
 
@@ -122,6 +115,10 @@
         });
 
         var layer = new Kinetic.Layer();
+
+        //
+        // All cell clicks are handled here.
+        //
         layer.on('click', function(evt) {
             var cell = board.getCell(evt.targetNode);
             console.log(cell.boardX + ', ' + cell.boardY);
