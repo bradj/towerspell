@@ -4,23 +4,6 @@ body {
 }
 
 .game {
-    width: 576px;
+    width: 480px;
     margin: 0 auto;
-    color: #333;
-    position: relative;
-    background-color: #aaa;
-}
-
-.cell {
-    width: 70px;
-    height: 50px;
-    margin: 1px;
-    display: inline-block;
-    background-color: #fff;
-    text-align: center;
-    font-size: 2em;
-}
-
-.cell:hover {
-    background-color: #eee;
 }
