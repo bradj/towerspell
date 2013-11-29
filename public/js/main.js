@@ -4,7 +4,10 @@
     var cellHeight = 50;
     var numRows = 12;
     var numCols = 8;
-    var cellColor = '#eee';
+    var cellColor = '#8ABDF2';
+    var cellStrokeColor = '#2D649D';
+    var cellSelectColor = '#7B98B6';
+    var textColor = '#fff';
     var game;
 
     function Cell(x, y) {
@@ -14,9 +17,8 @@
                 width: cellWidth,
                 height: cellHeight,
                 fill: cellColor,
-                stroke: '#333',
-                strokeWidth: 1,
-                cornerRadius: 5
+                stroke: cellStrokeColor,
+                strokeWidth: 1
             });
 
         this.text = new Kinetic.Text({
@@ -26,10 +28,11 @@
             fontFamily: 'Arial',
             fontStyle: 'bold',
             fontSize: 32,
-            fill: '#666'
+            fill: textColor
         });
 
         this.reset = function() { this.rect.setFill(cellColor); };
+        this.clicked = function() { this.rect.setFill(cellSelectColor); };
     };
 
     function Board(stage, layer) {
@@ -102,9 +105,9 @@
 
             var rect = cell.rect;
             var wordidx = cell.wordidx;
-            rect.setFill(rect.boardClicked ? cellColor : 'blue');
+            cell.clicked();
 
-            if (cell.wordidx != null) {
+            if (wordidx != null) {
                 var cellsToReset = word.slice(wordidx);
                 that.resetClickedState(cellsToReset);
                 word = word.length == 1 ? [] : word.slice(0, wordidx);
