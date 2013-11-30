@@ -43,7 +43,7 @@ var Dictionary = function() {
 
                 var t = xml.parseString(body);
 
-                if (t.childs[0].name == 'entry') {
+                if (t.childs && t.childs[0].name == 'entry') {
                     obj.callback(true);
                     dynamo.addWord(obj.word);
                 } 
