@@ -44,8 +44,7 @@ var Towerspell = function() {
         cell.clicked();
 
         // user clicked the last letter in the word
-        if (that.clickedLastLetter(cell))
-            that.removeWord();
+        if (that.clickedLastLetter(cell)) that.isWord();
         else if (that.clickedFirstletter(cell)) {
             that.resetClickedState(word);
             word = [];
@@ -98,6 +97,34 @@ var Towerspell = function() {
     this.removeWord = function() {
         board.removeWord(word);
         word = [];
+    };
+
+    this.isWord = function() {
+        var letters = '';
+        for (var ii = 0, len = word.length; ii < len; ii++)
+            letters += word[ii].text.getText();
+
+        console.log('Checking for ' + letters);
+
+        $.ajax({
+            url: '/api/word',
+            data: { word : letters },
+            dataType: 'json',
+            type: 'POST',
+            success: function(evt) {
+                if (evt.success) that.removeWord();
+                else {
+                    that.resetClickedState(word);
+                    word = [];
+                }
+
+                layer.draw();
+            },
+            error: function(evt) {
+                console.log('Error');
+                console.log(evt);
+            }
+        });
     };
 
     var board = new Board(stage, layer);

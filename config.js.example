@@ -2,6 +2,9 @@ var config = {}
 
 config.key = 'KEY_GOES_HERE';
 config.secret = 'SECRET_GOES_HERE';
+config.db = 'DB_NAME_HERE';
+
+config.dictionary_key = 'KEY_GOES_HERE';
 
 config.port = 8822;
 

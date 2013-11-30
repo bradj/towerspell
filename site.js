@@ -1,8 +1,11 @@
 var express     = require('express');
 var config      = require('./config.js');
+var Dictionary      = require('./lookup.js');
 var http     = require('http');
 
 var app = express();
+
+var dictionary = new Dictionary();
 
 var cache = {};
 
@@ -10,6 +13,7 @@ app.configure(function(){
   var maxage = 1209600;
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
+  app.use(express.bodyParser());
   app.use(express.static(__dirname + '/public', { maxAge : maxage }));
   app.use(app.router);
 });
@@ -24,8 +28,20 @@ function about(req, res) {
   res.end();
 }
 
+function getWord(req, res) {
+  console.log(req.body);
+  dictionary.find(
+    { 
+      word : req.body.word,
+      callback : function(result) {
+        res.json({ success : result });
+      }
+    });
+}
+
 app.get('/', home);
 app.get('/about', about);
+app.post('/api/word', getWord);
 
 var port = config.port ? config.port : 8822;
 app.listen(port);
