@@ -41,13 +41,20 @@ var Dictionary = function() {
             resp.on('end', function(chunk, encoding) {
                 if (chunk) body += chunk;
 
-                var t = xml.parseString(body);
+                try {
+                    var t = xml.parseString(body);
 
-                if (t.childs && t.childs[0].name == 'entry') {
-                    obj.callback(true);
-                    dynamo.addWord(obj.word);
-                } 
-                else obj.callback(false);
+                    if (t.childs && t.childs[0].name == 'entry') {
+                        obj.callback(true);
+                        dynamo.addWord(obj.word);
+                    } 
+                    else obj.callback(false);
+                } catch (err) {
+                    console.log('Exception in XML Parse');
+                    console.log(err);
+                    console.log(body);
+                    obj.callback(false);
+                }
             });
         }).on("error", function(e) {
             console.log("Got error: " + e.message);
