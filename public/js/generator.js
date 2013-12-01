@@ -1,42 +1,42 @@
 var Generator = function() {
 
-    var chances = [
-        {letter: 'E', chance: .12702 },
-        {letter: 'T', chance: .09056 },
-        {letter: 'A', chance: .08167 },
-        {letter: 'O', chance: .07507 },
-        {letter: 'I', chance: .06966 },
-        {letter: 'N', chance: .06749 },
-        {letter: 'S', chance: .06327 },
-        {letter: 'H', chance: .06094 },
-        {letter: 'R', chance: .05987 },
-        {letter: 'D', chance: .04253 },
-        {letter: 'L', chance: .04025 },
-        {letter: 'C', chance: .02782 },
-        {letter: 'U', chance: .02758 },
-        {letter: 'M', chance: .02406 },
-        {letter: 'W', chance: .02360 },
-        {letter: 'F', chance: .02228 },
-        {letter: 'G', chance: .02015 },
-        {letter: 'Y', chance: .01974 },
-        {letter: 'P', chance: .01929 },
-        {letter: 'B', chance: .01492 },
-        {letter: 'V', chance: .00978 },
-        {letter: 'K', chance: .00772 },
-        {letter: 'J', chance: .00153 },
-        {letter: 'X', chance: .00150 },
-        {letter: 'Q', chance: .00095 },
-        {letter: 'Z', chance: .00074 }];
-
     this.generate = function() {
         var random = Math.random();
         var currentPercentage = 1.0;
 
-        console.log(random);
-
-        for (var ii = 0, len = chances.length; ii < len; ii++)
-            if ((currentPercentage -= chances[ii].chance) < random) return chances[ii].letter;
+        for(var ii in Generator.chances)
+            if ((currentPercentage -= Generator.chances[ii].chance) < random) return ii;
 
     };
 
 };
+
+Generator.chances = 
+    {
+        'E': { chance: .12702, points: 1 },
+        'T': { chance: .09056, points: 1 },
+        'A': { chance: .08167, points: 1 },
+        'O': { chance: .07507, points: 1 },
+        'I': { chance: .06966, points: 1 },
+        'N': { chance: .06749, points: 1 },
+        'S': { chance: .06327, points: 1 },
+        'H': { chance: .06094, points: 4 },
+        'R': { chance: .05987, points: 1 },
+        'D': { chance: .04253, points: 2 },
+        'L': { chance: .04025, points: 1 },
+        'C': { chance: .02782, points: 3 },
+        'U': { chance: .02758, points: 1 },
+        'M': { chance: .02406, points: 3 },
+        'W': { chance: .02360, points: 4 },
+        'F': { chance: .02228, points: 4 },
+        'G': { chance: .02015, points: 2 },
+        'Y': { chance: .01974, points: 4 },
+        'P': { chance: .01929, points: 3 },
+        'B': { chance: .01492, points: 3 },
+        'V': { chance: .00978, points: 4 },
+        'K': { chance: .00772, points: 5 },
+        'J': { chance: .00153, points: 8 },
+        'X': { chance: .00150, points: 8 },
+        'Q': { chance: .00095, points: 10 },
+        'Z': { chance: .00074, points: 10 }
+    };

@@ -33,7 +33,7 @@ var Towerspell = function() {
     //
     // All cell clicks are handled here.
     //
-    layer.on('click', function(evt) {
+    layer.on('click touchend', function(evt) {
         var cell = board.getCell(evt.targetNode);
         console.log(cell.boardX + ', ' + cell.boardY + ' - ' + cell.text.getText());
 
@@ -45,6 +45,7 @@ var Towerspell = function() {
 
         // user clicked the last letter in the word
         if (that.clickedLastLetter(cell)) that.isWord();
+        // user clicked the first letter in the word
         else if (that.clickedFirstletter(cell)) {
             that.resetClickedState(word);
             word = [];
@@ -64,26 +65,12 @@ var Towerspell = function() {
             word.length == 1 ? cell.firstClicked() : cell.lastClicked();
         }
 
+        score.played(that.getLetters());
+
         layer.draw();
 
         evt.cancelBubble = true;
     });
-
-    this.resetClickedState = function(arr) {
-        for (var ii = 0, len = arr.length; ii < len; ii++) {
-            var cell = arr[ii];
-            cell.wordidx = null;
-            cell.reset();
-        }
-    };
-
-    this.isClickAllowed = function(cell) {
-        if (word.length == 0 || cell.wordidx != null) return true;
-
-        var lastcell = word[word.length - 1];
-
-        return (Math.abs(lastcell.boardX - cell.boardX) <= 1 && Math.abs(lastcell.boardY - cell.boardY) <= 1);
-    };
 
     this.clickedLastLetter = function(cell) {
         if (word.length < 3 || cell.wordidx != word.length - 1) return false;
@@ -94,15 +81,38 @@ var Towerspell = function() {
         return (cell.wordidx == 0);
     };
 
+    this.isClickAllowed = function(cell) {
+        if (word.length == 0 || cell.wordidx != null) return true;
+
+        var lastcell = word[word.length - 1];
+
+        return (Math.abs(lastcell.boardX - cell.boardX) <= 1 && Math.abs(lastcell.boardY - cell.boardY) <= 1);
+    };
+
+    this.getLetters = function() {
+        var letters = '';
+        
+        for (var ii = 0, len = word.length; ii < len; ii++)
+            letters += word[ii].text.getText();
+
+        return letters;
+    };
+
+    this.resetClickedState = function(arr) {
+        for (var ii = 0, len = arr.length; ii < len; ii++) {
+            var cell = arr[ii];
+            cell.wordidx = null;
+            cell.reset();
+        }
+    };
+
     this.removeWord = function() {
         board.removeWord(word);
         word = [];
     };
 
     this.isWord = function() {
-        var letters = '';
-        for (var ii = 0, len = word.length; ii < len; ii++)
-            letters += word[ii].text.getText();
+        var letters = this.getLetters();
 
         console.log('Checking for ' + letters);
 
@@ -112,12 +122,16 @@ var Towerspell = function() {
             dataType: 'json',
             type: 'POST',
             success: function(evt) {
-                if (evt.success) that.removeWord();
+                if (evt.success) {
+                    score.addToScore(letters);
+                    that.removeWord();
+                }
                 else {
                     that.resetClickedState(word);
                     word = [];
                 }
 
+                score.clearPlayed();
                 layer.draw();
             },
             error: function(evt) {
@@ -128,4 +142,5 @@ var Towerspell = function() {
     };
 
     var board = new Board(stage, layer);
+    var score = new Scorekeeper();
 };

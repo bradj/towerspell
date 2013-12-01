@@ -2,8 +2,24 @@ body {
     background-color: #eee;
     font-family: 'Roboto Condensed', sans-serif;
 }
+.parent {
+    text-align: center;
+}
 
 .game {
-    width: 400px;
+    clear: both;
+    width: 500px;
     margin: 0 auto;
 }
+
+.game-head {
+    width: 450px;
+    margin: 0 auto;
+    text-align: left;
+}
+.game-head > div {
+    font-size: 2em;
+    color: #fff;
+}
+.score { float: left; }
+.word { float: right; }
