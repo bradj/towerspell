@@ -1,1 +1,1 @@
-java -jar ~/code/closure/compiler.jar --warning_level VERBOSE --js public/js/generator.js --js public/js/cell.js --js public/js/board.js --js public/js/game.js --js public/js/main.js --js_output_file public/js/towerspell.min.js
+java -jar ~/code/closure/compiler.jar --js public/js/generator.js --js public/js/cell.js --js public/js/board.js --js public/js/game.js --js public/js/main.js --js_output_file public/js/towerspell.min.js
