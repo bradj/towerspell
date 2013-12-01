@@ -6,7 +6,7 @@ var Scorekeeper = function() {
     var wordDiv = document.getElementById('playedword');
 
     this.clearPlayed = function() {
-        wordDiv.innerText = '| 0';
+        wordDiv.textContent = '| 0';
     };
 
     this.played = function(word) {
@@ -14,7 +14,7 @@ var Scorekeeper = function() {
         for (var ii in word) 
             tmpscore += Generator.chances[word[ii]].points;
 
-        wordDiv.innerText = word + ' | ' + tmpscore;
+        wordDiv.textContent = word + ' | ' + tmpscore;
     };
 
     this.addToScore = function(word) {
@@ -25,9 +25,9 @@ var Scorekeeper = function() {
     };
 
     function updateScore() {
-        scoreDiv.innerText = score;
+        scoreDiv.textContent = score;
     }
 
-    scoreDiv.innerText = '0';
+    scoreDiv.textContent = '0';
     this.clearPlayed();
 };
