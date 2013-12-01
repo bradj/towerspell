@@ -15,14 +15,14 @@ app.configure(function(){
   var maxage = 1209600;
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
-  app.use(connect.urlencoded())
-  app.use(connect.json())
+  app.use(connect.urlencoded());
+  app.use(connect.json());
   app.use(express.static(__dirname + '/public', { maxAge : maxage }));
   app.use(app.router);
 });
 
 function home(req, res) {
-  res.render('index.jade');
+  res.render('index.jade', { globals: { debug : config.debug } });
   res.end();
 }
 

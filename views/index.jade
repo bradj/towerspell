@@ -5,11 +5,14 @@ html(lang="en")
         include includes/resources.jade
         link(href='http://fonts.googleapis.com/css?family=Roboto+Condensed', rel='stylesheet', type='text/css')
         script(src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.7.4.min.js")
-        script(src="/js/generator.js")
-        script(src="/js/cell.js")
-        script(src="/js/board.js")
-        script(src="/js/game.js")
-        script(src="/js/main.js")
+        if (globals.debug)
+            script(src="/js/generator.js")
+            script(src="/js/cell.js")
+            script(src="/js/board.js")
+            script(src="/js/game.js")
+            script(src="/js/main.js")
+        else
+            script(src="/js/towerspell.min.js")
     body(style="padding-top: 70px; background-image: url('../imgs/dark_Tire.png');")
         nav(role='navigation').navbar.navbar-inverse.navbar-fixed-top.text-center
             div.btn-group

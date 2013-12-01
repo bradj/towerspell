@@ -10,6 +10,8 @@ config.referer = 'REFERRER_GOES_HERE';
 
 config.localDict = 'path/to/local/dictionary';
 
+config.debug = true|false;
+
 config.port = 8822;
 
 module.exports = config;
