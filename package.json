@@ -15,6 +15,7 @@
     },
     "dependencies": {
         "express": "3.x",
+        "connect": "2.11.*",
         "jade": "0.35.x",
         "aws-sdk": "2.x",
         "node-xml-lite": "0.0.3"

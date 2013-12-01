@@ -1,7 +1,9 @@
 var express     = require('express');
+var connect     = require('connect');
+var util        = require('util');
 var config      = require('./config.js');
-var Dictionary      = require('./lookup.js');
-var http     = require('http');
+var Dictionary  = require('./lookup.js');
+var http        = require('http');
 
 var app = express();
 
@@ -13,7 +15,8 @@ app.configure(function(){
   var maxage = 1209600;
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
-  app.use(express.bodyParser());
+  app.use(connect.urlencoded())
+  app.use(connect.json())
   app.use(express.static(__dirname + '/public', { maxAge : maxage }));
   app.use(app.router);
 });
@@ -29,7 +32,13 @@ function about(req, res) {
 }
 
 function getWord(req, res) {
-  console.log(req.body);
+  if (req.headers['referer'] != config.referer) {
+    console.log('Bad ref');
+    res.json({success : false});
+    return;
+  }
+
+  util.log(util.inspect(req.body, { showHidden : false, depth : 1}));
   dictionary.find(
     { 
       word : req.body.word,

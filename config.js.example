@@ -6,6 +6,10 @@ config.db = 'DB_NAME_HERE';
 
 config.dictionary_key = 'KEY_GOES_HERE';
 
+config.referer = 'REFERRER_GOES_HERE';
+
+config.localDict = 'path/to/local/dictionary';
+
 config.port = 8822;
 
 module.exports = config;
