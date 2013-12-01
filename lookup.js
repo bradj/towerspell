@@ -1,7 +1,5 @@
-var http = require('http');
 var fs = require('fs');
 var config = require('./config.js');
-var xml = require("node-xml-lite");
 
 var Dictionary = function() {
     var that = this;
@@ -14,62 +12,9 @@ var Dictionary = function() {
     };
 
     this.searchLocal = function(obj) {
-        if (!dict[obj.word])this.searchDictionary(obj);
-        else {
-            console.log('Found locally');
-            obj.callback(true);
-        }
-    };
-
-    this.searchDictionary = function(obj) {
-        var options = {
-            host: 'dictionaryapi.com',
-            port: 80,
-            path: '/api/v1/references/collegiate/xml/' + obj.word + '?key=' + config.dictionary_key
-        };
-
-        var body = '';
-
-        http.get(options, function(resp) {
-            resp.setEncoding('utf8');
-            
-            resp.on('data', function(chunk) {
-                body += chunk;
-            });
-            
-            resp.on('end', function(chunk, encoding) {
-                if (chunk) body += chunk;
-
-                try {
-                    var t = xml.parseString(body);
-
-                    if (t.childs && t.childs[0].name == 'entry') {
-                        obj.callback(true);
-                        that.addWord(obj.word);
-                        console.log('Found wm');
-                    } 
-                    else obj.callback(false);
-                } catch (err) {
-                    console.log('Exception in XML Parse');
-                    console.log(err);
-                    console.log(body);
-                    obj.callback(false);
-                }
-            });
-        }).on("error", function(e) {
-            console.log("Got error: " + e.message);
-        });
-    };
-
-    this.addWord = function(word) {
-        dict[word] = true;
-
-        fs.appendFile(config.localDict, word, function(err) {
-            if (err) {
-                console.log('File write error');
-                console.log(err);
-            }
-        });
+        obj.callback(dict[obj.word]);
+        if (dict[obj.word]) console.log('Found');
+        else console.log('Not Found')
     };
 
     function addToDict(f) {
