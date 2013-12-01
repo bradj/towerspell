@@ -10,18 +10,41 @@ var Scorekeeper = function() {
     };
 
     this.played = function(word) {
-        var tmpscore = 0
-        for (var ii in word) 
-            tmpscore += Generator.chances[word[ii]].points;
+        var tmpscore = this.generateScore(word);
 
         wordDiv.textContent = word + ' | ' + tmpscore;
     };
 
     this.addToScore = function(word) {
-        for (var ii in word) 
-            score += Generator.chances[word[ii]].points;
-
+        score += this.generateScore(word);
         updateScore();
+    };
+
+    this.generateScore = function(word) {
+        var tmpscore = 0;
+        var len = word.length;
+
+        for (var ii in word) {
+            ii = parseInt(ii);
+
+            var multiplier = ii == 0 ? 1 : (ii + 1);
+
+            console.log(Generator.chances[word[ii]].points + ' * ' + (word.length > 3 ? len : 1));
+
+            tmpscore += Generator.chances[word[ii]].points * (word.length > 3 ? len : 1);
+
+            // console.log('(' + Generator.chances[word[ii]].points + ' + ' +
+            //     (word.length > 3 ? ii + 1 : 0) + ')' + 
+            //     ' * ' + 
+            //     multiplier);
+
+            // tmpscore += 
+            //     ((Generator.chances[word[ii]].points + 
+            //     (word.length > 3 ? ii + 1 : 0)) *
+            //     multiplier);
+        }
+
+        return tmpscore;
     };
 
     function updateScore() {
