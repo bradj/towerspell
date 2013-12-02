@@ -21,7 +21,15 @@ html(lang="en")
                     span.glyphicon.glyphicon-home
                 a(href='/about').btn.btn-lg.btn-primary
                     span.glyphicon.glyphicon-info-sign
-        div.parent
+        div.menu-parent
+            div.container
+                div.row
+                    div.col-md-offset-4.col-md-4
+                        button(id='startEndless').btn.btn-primary.btn-block Endless
+                div.row
+                    div.col-md-offset-4.col-md-4
+                        button(id='startFull').btn.btn-primary.btn-block Full Board
+        div.game-parent
             div.game-head
                 div(id='score').score
                     | 100

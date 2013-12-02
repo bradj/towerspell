@@ -29,7 +29,7 @@ var Scorekeeper = function() {
 
             var multiplier = ii == 0 ? 1 : (ii + 1);
 
-            console.log(Generator.chances[word[ii]].points + ' * ' + (word.length > 3 ? len : 1));
+            //console.log(Generator.chances[word[ii]].points + ' * ' + (word.length > 3 ? len : 1));
 
             tmpscore += Generator.chances[word[ii]].points * (word.length > 3 ? len : 1);
 

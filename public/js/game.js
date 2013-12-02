@@ -1,6 +1,6 @@
 var Globals = function() {
     cellWidth = 50;
-    cellHeight = 50;
+    cellHeight = 40;
     numRows = 12;
     numCols = 8;
     boardHeight = this.cellHeight * this.numRows;
@@ -12,7 +12,6 @@ var Globals = function() {
     cellFirstClickColor = '#F56E74';
     textColor = '#fff';
     fontFamily = 'Roboto Condensed';
-    game = null;
 
     return this;
 };
@@ -29,6 +28,8 @@ var Towerspell = function() {
     });
 
     var layer = new Kinetic.Layer();
+
+    this.endless = false;
 
     //
     // All cell clicks are handled here.
@@ -125,6 +126,9 @@ var Towerspell = function() {
                 if (evt.success) {
                     score.addToScore(letters);
                     that.removeWord();
+                    
+                    if (that.endless) 
+                        board.addRow();
                 }
                 else {
                     that.resetClickedState(word);
@@ -139,6 +143,12 @@ var Towerspell = function() {
                 console.log(evt);
             }
         });
+    };
+
+    this.start = function(endless) {
+        that.endless = endless;
+        board.generateBoard(that.endless);
+        $('.game-parent').show();
     };
 
     var board = new Board(stage, layer);

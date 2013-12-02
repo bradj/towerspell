@@ -2,8 +2,13 @@ body {
     background-color: #eee;
     font-family: 'Roboto Condensed', sans-serif;
 }
-.parent {
+.game-parent {
     text-align: center;
+    display: none;
+}
+
+.menu-parent {
+    margin-top: 50px;
 }
 
 .game {

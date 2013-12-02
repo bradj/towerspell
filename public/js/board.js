@@ -1,36 +1,48 @@
 var Board = function(stage, layer) {
     var that = this;
 
-    var xPos, yPos = 0;
     var cells = [numCols];
 
-    // Draw board
-    for (var xx = 0; xx < numCols; xx++) { // rows
-        xPos = xx * cellWidth;
-        cells[xx] = [numRows];
-
-        for (var yy = 0; yy < numRows; yy++) { // columns
-            yPos = (boardHeight - cellHeight) - (yy * cellHeight);
-
-            var cell = new Cell(xPos, yPos);
-            // I do this because I am listening for events off of the text and rect.
-            // I am sure there is a better way... Don't know what that way is yet.
-            cell.boardX = xx;
-            cell.boardY = yy;
-            cell.rect.boardX = cell.boardX;
-            cell.rect.boardY = cell.boardY;
-            cell.text.boardX = cell.boardX;
-            cell.text.boardY = cell.boardY;
+    this.addRow = function() {
+        for (var xx = 0, len = cells.length; xx < len; xx++)
+        {
+            var cell = new Cell(xx * cellWidth, (boardHeight - cellHeight));
+            cell.setArrayPosition(xx, 0);
 
             layer.add(cell.rect);
             layer.add(cell.text);
 
-            cells[xx][yy] = cell;
+            cells[xx].unshift(cell);
         }
-    }
 
-    stage.add(layer);
-    console.log('Board drawn');
+        this.redrawboard();
+    };
+
+    this.generateBoard = function(endless) {
+        var xPos, yPos = 0;
+        var rows = endless ? numRows / 2 : numRows;
+
+        // Draw board
+        for (var xx = 0; xx < numCols; xx++) { // rows
+            xPos = xx * cellWidth;
+            cells[xx] = [rows];
+
+            for (var yy = 0; yy < rows; yy++) { // columns
+                yPos = (boardHeight - cellHeight) - (yy * cellHeight);
+
+                var cell = new Cell(xPos, yPos);
+                cell.setArrayPosition(xx, yy);
+
+                layer.add(cell.rect);
+                layer.add(cell.text);
+
+                cells[xx][yy] = cell;
+            }
+        }
+
+        stage.add(layer);
+        console.log('Board drawn');
+    };
 
     // Returns the cell based on board X and Y position.
     this.getCell = function(shape) { return cells[shape.boardX][shape.boardY]; };
@@ -51,6 +63,19 @@ var Board = function(stage, layer) {
         }
     };
 
+    this.redrawboard = function() {
+        var yPos = 0;
+
+        for (var xx = 0; xx < numCols; xx++) { // rows
+            for (var yy = 1, len = cells[xx].length; yy < len; yy++) { // columns
+                yPos = cells[xx][yy].rect.getY() - cellHeight;
+
+                cells[xx][yy].setYPosition(yPos);
+                cells[xx][yy].setArrayPosition(xx, yy);
+            }
+        }
+    };
+
     // Removes the collection of cells provided from the board
     this.removeWord = function(cells) {
         for (var ii = 0, len = cells.length; ii < len; ii++) this.removeCell(cells[ii]);
@@ -60,9 +85,5 @@ var Board = function(stage, layer) {
     this.resetCells = function(cells) {
         for (var ii = 0, len = cells.length; ii < len; ii++)
             cells[ii].reset();
-    };
-
-    this.setLastClicked = function(cell) {
-        
     };
 };
